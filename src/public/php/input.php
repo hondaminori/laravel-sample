@@ -9,12 +9,13 @@ if(!empty($_POST['btn_confirm'])) {
   $pageFlag = 1;
 }
 
-// if (!empty($_POST['btn_submit'])) {
-//   $pageFlag = 2;
-//   echo '<pre>';
-//   var_dump($_POST);
-//   echo '</pre>';
-// }
+if (!empty($_POST['btn_submit'])) {
+  $pageFlag = 2;
+}
+
+//  echo '<pre>';
+//  var_dump($_POST);
+//  echo '</pre>';
 
 function h($str) {
   return htmlspecialchars($str, ENT_QUOTES, 'UTF-8');
