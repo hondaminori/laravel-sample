@@ -1,3 +1,4 @@
-<php>
-    echo "testです！";
-</php>
+<?php
+
+phpinfo();
+
