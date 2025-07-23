@@ -15,9 +15,11 @@ if (!empty($_POST['btn_submit'])) {
   $pageFlag = 2;
 }
 
+if(!empty($_POST)){
   echo '<pre>';
-  var_dump($_SESSION);
+    var_dump($_POST);
   echo '</pre>';
+}
 
 function h($str) {
   return htmlspecialchars($str, ENT_QUOTES, 'UTF-8');
@@ -50,13 +52,14 @@ function h($str) {
       <input type="url" name="url" value="<?php if(!empty($_POST['url'])) {echo h($_POST['url']); } ?>">
       <br>
       性別
-      <input type="radio" name="gender" value="0">男性
+      <input type="radio" name="gender" value="0">
+      <?php if( !isset($_POST['gender']) && !isset($_POST['gender']) === '0' ) ?>男性
       <input type="radio" name="gender" value="1">女性
       <br>
       年齢
       <select name="age">
-        <option value="0">選択してください</option>
-        <option value="1">〜19歳</option>
+        <option value="">選択してください</option>
+        <option value="1" selected>〜19歳</option>
         <option value="2">20歳〜29歳</option>
         <option value="2">30歳〜39歳</option>
         <option value="2">40歳〜49歳</option>
@@ -85,10 +88,54 @@ function h($str) {
         メールアドレス
         <?php echo h($_POST['email']); ?>
         <br>
+        ホームページ
+        <?php echo h($_POST['url']); ?>
+        <br>
+        性別
+        <?php if($_POST['gender'] === '0') : ?>
+          男性
+        <?php else : ?>
+          女性
+        <?php endif; ?>
+        <br>
+        年齢
+        <?php
+        $age = $_POST['age'];
+        switch ($age) {
+          case '1':
+            echo '〜19歳';
+            break;
+          case '2':
+            echo '20歳〜29歳';
+            break;
+          case '3':
+            echo '30歳〜39歳';
+            break;
+          case '4':
+            echo '40歳〜49歳';
+            break;
+          case '5':
+            echo '50歳〜59歳';
+            break;
+          case '6':
+            echo '60歳〜';
+            break;
+          default:
+            echo '選択されていません';
+            break;
+        }; ?>
+        <br>
+        お問い合わせ内容
+        <?php echo h($_POST['contact']); ?>
+        <br>
         <input type="submit" name="back" value="戻る">
         <input type="submit" name="btn_submit" value="送信する">
         <input type="hidden" name="your_name" value="<?php echo h($_POST['your_name']); ?>">
         <input type="hidden" name="email" value="<?php echo h($_POST['email']); ?>">
+        <input type="hidden" name="url" value="<?php echo h($_POST['url']); ?>">
+        <input type="hidden" name="gender" value="<?php echo h($_POST['gender']); ?>">
+        <input type="hidden" name="age" value="<?php echo h($_POST['age']); ?>">
+        <input type="hidden" name="contact" value="<?php echo h($_POST['contact']); ?>">
         <input type="hidden" name="csrf" value="<?php echo h($_POST['csrf']); ?>">
       </form>
     <?php endif; ?>
