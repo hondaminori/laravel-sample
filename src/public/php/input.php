@@ -2,12 +2,15 @@
 
 session_start();
 
+require 'validation.php';
+
 header('X-FRAME-OPTIONS: DENY');
 
 // 0:入力,1:確認,2:完了
 $pageFlag = 0;
+$errors = validation($_POST);
 
-if(!empty($_POST['btn_confirm'])) {
+if(!empty($_POST['btn_confirm']) && empty($errors)) {
   $pageFlag = 1;
 }
 
@@ -41,6 +44,15 @@ function h($str) {
     }
     $token = $_SESSION['csrfToken'];
     ?>
+
+<?php if(!empty($errors) && !empty($_POST['btn_confirm'])) : ?>
+  <?php echo '<ul>'; ?>
+    <?php foreach($errors as $error) {
+      echo '<li>' . $error . '</li>';
+    } ?>
+  <?php echo '</ul>'; ?>
+<?php endif; ?>
+
     <form method="POST" action="input.php">
       氏名
       <input type="text" name="your_name" value="<?php if(!empty($_POST['your_name'])) {echo h($_POST['your_name']); } ?>">
@@ -138,8 +150,8 @@ function h($str) {
         <input type="hidden" name="your_name" value="<?php echo h($_POST['your_name']); ?>">
         <input type="hidden" name="email" value="<?php echo h($_POST['email']); ?>">
         <input type="hidden" name="url" value="<?php echo h($_POST['url']); ?>">
-        <input type="hidden" name="gender" value="<?php echo h($_POST['gender']); ?>">
-        <input type="hidden" name="age" value="<?php echo h($_POST['age']); ?>">
+        <input type="hidden" name="gender" value="<?php echo $_POST['gender']; ?>">
+        <input type="hidden" name="age" value="<?php echo $_POST['age']; ?>">
         <input type="hidden" name="contact" value="<?php echo h($_POST['contact']); ?>">
         <input type="hidden" name="caution" value="<?php echo $_POST['caution']; ?>">
         <input type="hidden" name="csrf" value="<?php echo h($_POST['csrf']); ?>">
